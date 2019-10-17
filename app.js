@@ -16,24 +16,6 @@ app.get("/", function (req, res) {
     res.render("landing");
 });
 
-//CREATE DB Values
-/*
-Campground.create(
-    {
-        name: "Granite Hill",
-        image: "https://www.photosforclass.com/download/pixabay-1149402?webUrl=https%3A%2F%2Fpixabay.com%2Fget%2F57e1d14a4e52ae14f6da8c7dda793f7f1636dfe2564c704c73287ad29f49cc5b_960.jpg&user=Free-Photos",
-        description: "This is a huge granite hill, no bathroom. No water. Beautiful granite!"
-    },
-    function (err, campground) {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log("NEW Campground created!");
-            console.log(campground);
-        }
-    }
-)*/
-
 //INDEX - show all campgrounds
 app.get("/campgrounds", function (req, res) {
     //Get all data from DB
@@ -70,8 +52,9 @@ app.get("/campgrounds/new", function (req, res) {
 
 //SHOW - show more information about one campground
 app.get("/campgrounds/:id", function (req, res) {
+    //find the campground with provided ID
+    
     var id = req.params.id;
-
     Campground.findById(id, function(err, campgroundInfo){
         if(err){
             console.log(err);
