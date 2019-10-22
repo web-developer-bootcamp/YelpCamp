@@ -53,16 +53,22 @@ app.get("/campgrounds/new", function (req, res) {
 //SHOW - show more information about one campground
 app.get("/campgrounds/:id", function (req, res) {
     //find the campground with provided ID
-    
+
     var id = req.params.id;
-    Campground.findById(id, function(err, campgroundInfo){
+    Campground.findById(id).populate("comments").exec(function(err, campgroundInfo){
         if(err){
             console.log(err);
         }else{
+            console.log(campgroundInfo)
             res.render("show", {campground: campgroundInfo});
         }
     });
 });
+
+// ===============
+// COMMENTS ROUTES
+// ===============
+
 
 app.get("*", (req, res) => res.send("<h1>PAGE NOT FOUND...............</h1>"));
 app.listen(3000, () => console.log("The YelpCamp Server started!"));
