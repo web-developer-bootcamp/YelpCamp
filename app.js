@@ -55,12 +55,12 @@ app.get("/campgrounds/:id", function (req, res) {
     //find the campground with provided ID
 
     var id = req.params.id;
-    Campground.findById(id).populate("comments").exec(function(err, campgroundInfo){
-        if(err){
+    Campground.findById(id).populate("comments").exec(function (err, campgroundInfo) {
+        if (err) {
             console.log(err);
-        }else{
+        } else {
             console.log(campgroundInfo)
-            res.render("campgrounds/show", {campground: campgroundInfo});
+            res.render("campgrounds/show", { campground: campgroundInfo });
         }
     });
 });
@@ -69,8 +69,16 @@ app.get("/campgrounds/:id", function (req, res) {
 // COMMENTS ROUTES
 // ===============
 
-app.get("/campgrounds/:id/comments/new", function(req, res){
-    res.render("comments/new");
+app.get("/campgrounds/:id/comments/new", function (req, res) {
+    //find campgrounds by ID
+    Campground.findById(req.params.id, function (err, campground) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.render("comments/new", {campground: campground});
+        }
+    });
+
 })
 
 app.get("*", (req, res) => res.send("<h1>PAGE NOT FOUND...............</h1>"));
