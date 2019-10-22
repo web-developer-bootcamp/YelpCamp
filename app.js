@@ -5,14 +5,14 @@ var app = express();
 var Campground = require("./models/campground");
 var seedDB = require("./seed");
 
-seedDB();
+//seedDB();
 
 //mongoose
 mongoose.connect('mongodb://localhost:27017/yelp_camp', { useNewUrlParser: true }); // mongoDB connection
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 
-app.get("/", function (req, res) {
+app.get("", function (req, res) {
     res.render("landing");
 });
 
@@ -23,7 +23,7 @@ app.get("/campgrounds", function (req, res) {
         if (err) {
             console.log(err);
         } else {
-            res.render("campgrounds", { campgrounds: allCampgrounds });
+            res.render("campgrounds/campgrounds", { campgrounds: allCampgrounds });
         }
     });
 });
@@ -40,14 +40,14 @@ app.post("/campgrounds", function (req, res) {
         if (err) {
             console.log(err);
         } else {
-            res.redirect("campgrounds");
+            res.redirect("campgrounds/campgrounds");
         }
     });
 });
 
 //NEW - show form to create new campground
 app.get("/campgrounds/new", function (req, res) {
-    res.render("new");
+    res.render("campgrounds/new");
 });
 
 //SHOW - show more information about one campground
@@ -60,7 +60,7 @@ app.get("/campgrounds/:id", function (req, res) {
             console.log(err);
         }else{
             console.log(campgroundInfo)
-            res.render("show", {campground: campgroundInfo});
+            res.render("campgrounds/show", {campground: campgroundInfo});
         }
     });
 });
@@ -69,6 +69,9 @@ app.get("/campgrounds/:id", function (req, res) {
 // COMMENTS ROUTES
 // ===============
 
+app.get("/campgrounds/:id/comments/new", function(req, res){
+    res.render("comments/new");
+})
 
 app.get("*", (req, res) => res.send("<h1>PAGE NOT FOUND...............</h1>"));
 app.listen(3000, () => console.log("The YelpCamp Server started!"));
