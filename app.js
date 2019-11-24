@@ -6,7 +6,7 @@ var Campground = require("./models/campground");
 var Comment = require("./models/comment");
 var seedDB = require("./seed");
 
-//seedDB();
+seedDB();
 
 //mongoose
 mongoose.connect('mongodb://localhost:27017/yelp_camp', { useNewUrlParser: true }); // mongoDB connection
