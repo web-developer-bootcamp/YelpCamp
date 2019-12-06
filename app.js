@@ -131,6 +131,7 @@ app.get("/register", function (req, res) {
     res.render("register")
 });
 
+//register post form
 app.post("/register", function(req, res){
     var newUser = new User({username: req.body.username});
     var pwd = req.body.password;
@@ -143,6 +144,18 @@ app.post("/register", function(req, res){
             res.redirect("/campgrounds");
         })
     })
+});
+
+//show login
+app.get("/login", function(req, res){
+    res.render("login");
+});
+
+//login post form
+app.post("/login", passport.authenticate("local", {
+    successRedirect: "/campgrounds",
+    failureRedirect: "/login"
+}), function (req, res) {
 });
 
 app.get("*", (req, res) => res.send("<h1>PAGE NOT FOUND...............</h1>"));
