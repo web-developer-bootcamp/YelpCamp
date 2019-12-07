@@ -21,17 +21,17 @@ app.get("", function (req, res) {
 });
 
 //passport config
-app.use(passport.initialize());
-app.use(passport.session());
-passport.use(new localStrategy(User.authenticate()));
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
-
 app.use(require("express-session")({
     secret: "Once again Rusty wins cutest dog!",
     resave: false,
     saveUninitialized: false
 }));
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(new localStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 //INDEX - show all campgrounds
 app.get("/campgrounds", function (req, res) {
@@ -97,7 +97,7 @@ app.get("/campgrounds/:id/comments/new", isLoggedIn ,function (req, res) {
     });
 });
 
-app.post("/campgrounds/:id/comments", function (req, res) {
+app.post("/campgrounds/:id/comments", isLoggedIn ,function (req, res) {
     //lookup compground using ID
     Campground.findById(req.params.id, function (err, campground) {
         if (err) {
@@ -168,10 +168,10 @@ app.get("/logout", function (req, res) {
 //meddleware loggin check
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated()) {
+        console.log("User logged in successfully");
         return next();
-    } else {
-        res.redirect("/login");
-    }
+    } 
+    res.redirect("/login");
 }
 
 app.get("*", (req, res) => res.send("<h1>PAGE NOT FOUND...............</h1>"));
