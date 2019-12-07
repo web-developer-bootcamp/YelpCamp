@@ -28,6 +28,10 @@ app.use(require("express-session")({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(function(req, res, next){
+    res.locals.currentUser = req.user;
+    next();
+})
 
 passport.use(new localStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
@@ -35,12 +39,13 @@ passport.deserializeUser(User.deserializeUser());
 
 //INDEX - show all campgrounds
 app.get("/campgrounds", function (req, res) {
+    console.log(req.user)
     //Get all data from DB
     Campground.find({}, function (err, allCampgrounds) {
         if (err) {
             console.log(err);
         } else {
-            res.render("campgrounds/campgrounds", { campgrounds: allCampgrounds });
+            res.render("campgrounds/campgrounds", { campgrounds: allCampgrounds});
         }
     });
 });
