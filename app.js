@@ -14,7 +14,7 @@ var commentRoutes = require("./routes/comments");
 var campgroundRouter = require("./routes/campgrounds");
 var indexRouter = require("./routes/index");
 
-seedDB();
+// seedDB(); // seed the database
 
 //mongoose
 mongoose.connect('mongodb://localhost:27017/yelp_camp', { useNewUrlParser: true }); // mongoDB connection
@@ -31,16 +31,18 @@ app.use(require("express-session")({
     resave: false,
     saveUninitialized: false
 }));
+
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(function(req, res, next){
-    res.locals.currentUser = req.user;
-    next();
-})
 
 passport.use(new localStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
+app.use(function(req, res, next){
+    res.locals.currentUser = req.user;
+    next();
+})
 
 app.use(indexRouter);
 app.use(commentRoutes);
